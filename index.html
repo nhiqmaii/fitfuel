@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitFuel — Your Health Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <span class="logo">FF</span>
+      <h1>FitFuel</h1>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button class="tab" data-view="dashboard">Dashboard</button>
+      <button class="tab" data-view="nutrition">Nutrition</button>
+      <button class="tab" data-view="workouts">Workouts</button>
+      <button class="tab" data-view="water">Water</button>
+      <button class="tab" data-view="progress">Progress</button>
+      <button class="tab" data-view="settings">Settings</button>
+    </nav>
+  </header>
+
+  <main id="app" class="app-main">
+    <!-- Views render here -->
+  </main>
+
+  <footer class="app-footer">
+    <span>Built by Greyson · data stays in your browser</span>
+  </footer>
+
+  <script src="js/store.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/nutrition.js"></script>
+  <script src="js/workouts.js"></script>
+  <script src="js/tracker.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

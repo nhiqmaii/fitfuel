@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Editor junk
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
