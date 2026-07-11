@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitFuel — Fuel your fitness, own your data</title>
+  <meta name="description" content="FitFuel is a zero-backend fitness & nutrition dashboard that runs entirely in your browser. No accounts, no servers, your data stays yours." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- NAV -->
+  <header class="nav">
+    <a class="nav__brand" href="#top">
+      <span class="nav__logo">FF</span>
+      <span>FitFuel</span>
+    </a>
+    <nav class="nav__links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn btn--ghost" href="../index.html">Open app →</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow"> Zero backend · Zero accounts · 100% yours</p>
+      <h1 class="hero__title">Fuel your fitness.<br /><span>Own your data.</span></h1>
+      <p class="hero__subtitle">
+        FitFuel is a snappy little health dashboard that lives entirely in your
+        browser. Track meals, workouts, water, and weight — no sign-ups, no
+        servers, no creepy data harvesting.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="../index.html">Launch FitFuel</a>
+        <a class="btn btn--ghost" href="#features">See what it does</a>
+      </div>
+      <p class="hero__note">Free forever · Works offline · Your data never leaves this device</p>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat"><span class="stat__num">0</span><span class="stat__label">Servers to trust</span></div>
+    <div class="stat"><span class="stat__num">6</span><span class="stat__label">Tracking modules</span></div>
+    <div class="stat"><span class="stat__num">100%</span><span class="stat__label">Data stays local</span></div>
+    <div class="stat"><span class="stat__num">∞</span><span class="stat__label">Zoomies enabled</span></div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <h2 class="section__title">Everything you need, nothing you don't</h2>
+    <p class="section__lead">Six focused tools that respect your time and your privacy.</p>
+    <div class="feature-grid">
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Dashboard</h3>
+        <p>Your whole day at a glance — calories, water, workouts, and weight in one clean view.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Nutrition</h3>
+        <p>Log meals with calories and macros, tracked against your personal daily goals.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Workouts</h3>
+        <p>Record exercises as sets × reps @ weight and watch your total volume climb.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Water</h3>
+        <p>Tap to track glasses against your hydration goal. Stay watered, human.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Progress</h3>
+        <p>Log your weight and see a dependency-free SVG trend line. No chart libraries needed.</p>
+      </article>
+      <article class="card">
+        <div class="card__icon"></div>
+        <h3>Settings</h3>
+        <p>Set your daily goals your way, and reset everything whenever you want a fresh start.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <h2 class="section__title">Up and running in 3 sniffs</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="step__num">1</span>
+        <h3>Open it</h3>
+        <p>Launch the app in any browser. No install, no download, no account creation.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">2</span>
+        <h3>Set your goals</h3>
+        <p>Tell FitFuel your calorie, water, and weight targets in Settings.</p>
+      </div>
+      <div class="step">
+        <span class="step__num">3</span>
+        <h3>Track & thrive</h3>
+        <p>Log as you go. Everything saves locally and instantly. That's it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <h2 class="section__title">Questions? Good.</h2>
+    <details class="faq__item">
+      <summary>Where does my data live?</summary>
+      <p>Entirely in your browser via <code>localStorage</code>. It never touches a server because there isn't one.</p>
+    </details>
+    <details class="faq__item">
+      <summary>Do I need to create an account?</summary>
+      <p>Nope. No email, no password, no "we value your privacy" cookie banner nonsense.</p>
+    </details>
+    <details class="faq__item">
+      <summary>Does it work offline?</summary>
+      <p>Yes! Once loaded, it's just static files. Toss your Wi-Fi in the trash if you like.</p>
+    </details>
+    <details class="faq__item">
+      <summary>Who made this?</summary>
+      <p>Greyson the digital puppy , on a rainy weekend — with excellent taste and questionable amounts of caffeine.</p>
+    </details>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to fuel up?</h2>
+    <p>Your data. Your goals. Your browser. Let's go.</p>
+    <a class="btn btn--primary btn--big" href="../index.html">Launch FitFuel</a>
+  </section>
+
+  <footer class="footer">
+    <p>Built by Greyson · data stays in your browser · made with  and zero backends</p>
+  </footer>
+</body>
+</html>
