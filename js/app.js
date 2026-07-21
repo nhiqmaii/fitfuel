@@ -10,7 +10,10 @@ const App = (() => {
     nutrition: Nutrition.render,
     workouts: Workouts.render,
     water: Tracker.renderWater,
-    progress: Tracker.renderProgress,
+    progress: Progress.render,
+    insights: Insights.render,
+    ask: AskData.render,
+    privacy: Privacy.render,
     settings: renderSettings,
   };
 
@@ -66,6 +69,12 @@ const App = (() => {
           ${goalInput('water', 'Water (glasses)', g.water)}
           <button type="submit">Save goals</button>
         </form>`) +
+      UI.card('Demo Data', `
+        <p>Load 60 days of realistic sample data to explore FitFuel without
+        entering anything personal. Great for demos and screenshots.</p>
+        <div class="btn-row">
+          <button id="sample-btn">Load sample data</button>
+        </div>`) +
       UI.card('Danger Zone', `
         <p>Wipe all data and start fresh. No undo. No take-backs.</p>
         <button id="reset-btn" class="danger">Reset everything</button>`);
@@ -85,6 +94,12 @@ const App = (() => {
     });
     document.getElementById('reset-btn').addEventListener('click', () => {
       if (confirm('Really wipe everything?')) Store.reset();
+    });
+    document.getElementById('sample-btn').addEventListener('click', () => {
+      if (confirm('This replaces your current data with 60 days of demo data. Continue?')) {
+        SampleData.load(60);
+        go('progress');
+      }
     });
   }
 

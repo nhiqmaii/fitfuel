@@ -42,6 +42,17 @@ const Store = (() => {
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const today = () => new Date().toISOString().slice(0, 10);
 
+  // Rolling window of the last N days, oldest-first. Used by Progress views.
+  function lastNDays(n) {
+    const out = [];
+    for (let i = n - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      out.push(d.toISOString().slice(0, 10));
+    }
+    return out;
+  }
+
   // --- generic accessors ---
   const getState = () => state;
   const getGoals = () => state.goals;
@@ -98,6 +109,12 @@ const Store = (() => {
     save();
   }
 
+  // Bulk overwrite (sample data, imports). One save = one re-render.
+  function replace(newState) {
+    state = { ...defaults(), ...newState };
+    save();
+  }
+
   // --- aggregates ---
   function nutritionTotals(date = today()) {
     return mealsByDate(date).reduce(
@@ -112,11 +129,11 @@ const Store = (() => {
   }
 
   return {
-    today, getState, getGoals, setGoals,
+    today, lastNDays, getState, getGoals, setGoals,
     addMeal, removeMeal, mealsByDate,
     addWorkout, removeWorkout, workoutsByDate,
     addWater, waterFor,
     addWeight, removeWeight, getWeights,
-    nutritionTotals, reset,
+    nutritionTotals, reset, replace,
   };
 })();
