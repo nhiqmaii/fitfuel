@@ -1,0 +1,20 @@
+{
+  "name": "FitFuel",
+  "short_name": "FitFuel",
+  "description": "A privacy-first fitness and nutrition dashboard that runs entirely in your browser. No accounts, no servers, your data stays on your device.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f1115",
+  "theme_color": "#4ade80",
+  "categories": ["health", "fitness", "lifestyle"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    }
+  ]
+}
