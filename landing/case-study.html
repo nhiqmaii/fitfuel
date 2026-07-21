@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitFuel Case Study — Building a privacy-first behavioral health dashboard</title>
+  <meta name="description" content="How I designed and built FitFuel: a zero-backend fitness tracker grounded in cognitive science and behavioral research." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="case-study.css" />
+</head>
+<body class="cs-page">
+
+  <!-- Top scroll progress bar -->
+  <div class="cs-progress" aria-hidden="true"><div class="cs-progress__fill"></div></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a class="nav__brand" href="index.html">
+      <span class="nav__logo">FF</span>
+      <span>FitFuel</span>
+    </a>
+    <nav class="nav__links">
+      <a href="index.html">Home</a>
+      <a href="index.html#features">Features</a>
+      <a href="index.html#faq">FAQ</a>
+      <a class="btn btn--ghost" href="../index.html">Open app</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="cs-hero cs-reveal">
+    <div class="cs-hero__blob cs-hero__blob--a" aria-hidden="true"></div>
+    <div class="cs-hero__blob cs-hero__blob--b" aria-hidden="true"></div>
+    <p class="cs-eyebrow">Case Study</p>
+    <h1 class="cs-title">Designing FitFuel</h1>
+    <p class="cs-subtitle">
+      A privacy-first behavioral health dashboard that turns raw self-tracking data
+      into observations about your own habits &mdash; without any of it leaving your device.
+    </p>
+    <div class="cs-meta cs-tilt">
+      <div><span>Role</span><strong>Sole designer &amp; developer</strong></div>
+      <div><span>Timeline</span><strong>Spring 2026</strong></div>
+      <div><span>Stack</span><strong>Vanilla HTML, CSS, JS</strong></div>
+      <div><span>Focus</span><strong>Product, behavioral science, data viz</strong></div>
+    </div>
+  </section>
+
+  <!-- Layout: sticky TOC + long-form content -->
+  <div class="cs-layout">
+
+    <!-- STICKY TABLE OF CONTENTS -->
+    <aside class="cs-toc" aria-label="Case study sections">
+      <p class="cs-toc__label">Contents</p>
+      <ol>
+        <li><a href="#tldr">TL;DR</a></li>
+        <li><a href="#numbers">By the numbers</a></li>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#hypothesis">Hypothesis</a></li>
+        <li><a href="#research">User research</a></li>
+        <li><a href="#design">Design decisions</a></li>
+        <li><a href="#dev">Architecture</a></li>
+        <li><a href="#testing">Testing</a></li>
+        <li><a href="#learned">What I learned</a></li>
+        <li><a href="#next">What's next</a></li>
+      </ol>
+    </aside>
+
+    <main class="cs-content">
+
+      <!-- TL;DR -->
+      <section class="cs-section cs-reveal" id="tldr">
+        <h2>TL;DR</h2>
+        <p class="cs-lead">
+          Most fitness apps make you trade your health data for basic tracking.
+          I asked whether a truly local, offline-first app could do the same job while
+          also being <em>more</em> useful, by pairing tracking with behavioral insights.
+          FitFuel is the answer: no accounts, no servers, no third parties, plus a
+          pattern-detection layer that reflects what your data actually says about you.
+        </p>
+      </section>
+
+      <!-- BY THE NUMBERS -->
+      <section class="cs-section cs-reveal" id="numbers">
+        <h2>By the numbers</h2>
+        <div class="cs-stats-grid">
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="10">0</span>
+            <span class="cs-stat__label">focused JS modules</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="0">0</span>
+            <span class="cs-stat__label">runtime dependencies</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="0" data-suffix=" B">0 B</span>
+            <span class="cs-stat__label">sent to servers</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="12">0</span>
+            <span class="cs-stat__label">natural-language intents</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="6">0</span>
+            <span class="cs-stat__label">behavioral insight types</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__num" data-count="100" data-suffix="%">0%</span>
+            <span class="cs-stat__label">data stays on device</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROBLEM -->
+      <section class="cs-section cs-reveal" id="problem">
+        <h2>1. The problem</h2>
+        <p>
+          Fitness apps are stuck in a weird trade-off. To get even basic tracking, users
+          hand over months of intimate behavioral data &mdash; when they sleep, what they eat,
+          how their weight changes &mdash; to companies whose business models depend on
+          keeping that data. Most people never read the privacy policies; the few who do
+          usually stop using the app.
+        </p>
+        <p>
+          Separately, most trackers stop at <strong>data</strong>. They show you numbers
+          but rarely help you make sense of them. A user can log 60 workouts and still
+          have no idea whether they train more on weekends, whether their hydration
+          dips on rest days, or whether their consistency is trending up or down.
+        </p>
+        <div class="cs-callout">
+          <strong>The gap I noticed:</strong> the apps that respect your privacy tend to
+          be barebones, and the apps that give you insights tend to demand your data.
+          Nobody was really trying to do both.
+        </div>
+      </section>
+
+      <!-- HYPOTHESIS -->
+      <section class="cs-section cs-reveal" id="hypothesis">
+        <h2>2. Hypothesis</h2>
+        <p>A single-page, offline-first web app could:</p>
+        <ol class="cs-list">
+          <li>Store every byte of user data on-device, with zero servers involved.</li>
+          <li>Still deliver the kind of behavioral pattern detection users normally have to trust a cloud service for.</li>
+          <li>Make its own privacy claims <em>verifiable</em> &mdash; not just marketing copy.</li>
+        </ol>
+        <p>
+          If this works, it challenges the assumption that "useful" and "private" are opposites in health tech.
+        </p>
+      </section>
+
+      <!-- USER RESEARCH -->
+      <section class="cs-section cs-reveal" id="research">
+        <h2>3. User research</h2>
+        <p>
+          I ran short (~15 minute) interviews with peers who currently use or have
+          recently abandoned a fitness tracking app. I wanted to understand three things:
+          what features they actually use, what makes them stop, and how they feel
+          about where their data lives.
+        </p>
+        <h3>Interview themes</h3>
+        <ul class="cs-list">
+          <li><strong>"I only use like 20% of the app."</strong> Most participants had a small set of features they returned to, and ignored the rest of the dashboard entirely.</li>
+          <li><strong>"I have no idea what any of my numbers mean."</strong> Users could tell me their calorie total for the day but not whether it was consistent with their week.</li>
+          <li><strong>"I stopped because it felt like homework."</strong> Friction around logging was the top reason for churn.</li>
+          <li><strong>Privacy sat lower on the stated priority list &mdash; but every participant assumed their data was being sold.</strong> They had normalized the tradeoff without ever making an active choice about it.</li>
+        </ul>
+        <div class="cs-callout cs-callout--muted">
+          <strong>Note to future me:</strong> This section still needs real participant
+          quotes and the actual n. Replace this callout after finishing the round of
+          interviews scheduled for the coming weeks.
+        </div>
+      </section>
+
+      <!-- DESIGN -->
+      <section class="cs-section cs-reveal" id="design">
+        <h2>4. Design decisions</h2>
+
+        <h3>Focused feature set, not a Swiss Army knife</h3>
+        <p>
+          Based on the "20% of the app" theme, I limited FitFuel to five tracking
+          concerns (nutrition, workouts, hydration, weight, and daily goals) and
+          four analysis views (Dashboard, Progress, Insights, Ask Your Data).
+          Nothing else. Every feature has to earn its slot.
+        </p>
+
+        <h3>Insights framed as observations, not advice</h3>
+        <p>
+          Coming from a cognitive science background, I was cautious about the risk
+          of a tracking app slipping into implied medical advice. Every insight in
+          FitFuel is written as a description of the user's own tracked data
+          &mdash; never as a recommendation.
+        </p>
+        <div class="cs-callout">
+          Example insight: <em>"Your workouts cluster on Tuesday and Thursday. Time-of-week
+          patterns are one of the strongest predictors of habit persistence in behavioral
+          research."</em> &mdash; observation + relevant context, no "you should" language.
+        </div>
+
+        <h3>Privacy as a visible feature, not a footnote</h3>
+        <p>
+          Instead of putting a privacy policy in the footer, I made privacy a
+          first-class tab. The Privacy view shows the user exactly how many entries
+          are on their device, that zero bytes have gone to servers, and gives them
+          one-click export, import, and delete controls. The claim becomes something
+          you can verify, not just a promise.
+        </p>
+
+        <h3>An "AI" feature that admits it isn't one</h3>
+        <p>
+          Ask Your Data lets users query their own history in natural-ish language
+          ("what's my streak?", "when do I usually work out?"). It is deliberately
+          <strong>not</strong> an LLM. Every answer is deterministic, computed from
+          the user's data by a small keyword-based intent matcher. This preserves
+          the privacy promise, avoids hallucination, and honestly says "I don't
+          track that" when a question falls outside the data model. Stronger as a
+          product decision than duct-taping GPT to a health app, even if less trendy.
+        </p>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section class="cs-section cs-reveal" id="dev">
+        <h2>5. Architecture</h2>
+        <p>
+          FitFuel is one HTML file, one CSS file, and ten small JavaScript modules.
+          No framework, no build step, no dependencies. Not purity for its own sake &mdash;
+          it was the fastest path to something that ships in any browser and can be
+          audited end-to-end by a human in under an hour.
+        </p>
+        <p class="cs-hint">Click any module to see what it does.</p>
+
+        <div class="cs-module-grid">
+          <button class="cs-module-card" data-title="store.js" data-kind="Data layer"
+            data-body="The single source of truth. Every feature reads and writes through Store, so persistence stays a pure CRUD concern. Includes `Store.replace()` for bulk imports and a `lastNDays(n)` helper reused by every analytics view.">
+            <span class="cs-module-name">store.js</span>
+            <span class="cs-module-tag">data</span>
+          </button>
+          <button class="cs-module-card" data-title="ui.js" data-kind="Shared helpers"
+            data-body="Small pure functions for building HTML: card wrappers, progress bars, empty states, and HTML escaping. Keeps every feature module declarative and consistent-looking without a component framework.">
+            <span class="cs-module-name">ui.js</span>
+            <span class="cs-module-tag">shared</span>
+          </button>
+          <button class="cs-module-card" data-title="charts.js" data-kind="Data viz primitives"
+            data-body="Dependency-free SVG chart primitives: line charts, bar charts, and a segmented range control (7D / 30D / 90D / All). Uses non-scaling strokes so charts stay crisp at any width. Reused across the Progress and Insights views.">
+            <span class="cs-module-name">charts.js</span>
+            <span class="cs-module-tag">viz</span>
+          </button>
+          <button class="cs-module-card" data-title="progress.js" data-kind="Trends dashboard"
+            data-body="The 'understand your data over time' view. Renders weight trend, calories per day, workout frequency, and hydration &mdash; each with the same reusable range control. Owns aggregation for the trend charts.">
+            <span class="cs-module-name">progress.js</span>
+            <span class="cs-module-tag">feature</span>
+          </button>
+          <button class="cs-module-card" data-title="insights.js" data-kind="Behavioral analytics"
+            data-body="Pattern detection over your own data. `Insights.analyze(state, days)` is pure: give it a snapshot, get back sorted insight objects (streaks, day-of-week patterns, correlations, consistency scores, gentle observations). Because it is pure, Ask Your Data reuses it directly.">
+            <span class="cs-module-name">insights.js</span>
+            <span class="cs-module-tag">analytics</span>
+          </button>
+          <button class="cs-module-card" data-title="askData.js" data-kind="Local Q&A"
+            data-body="A natural-language-ish query layer with 12 hand-written intents and a keyword scoring matcher. No LLM, no API calls, no hallucinations. If a question doesn't match, it says so and suggests example phrasings.">
+            <span class="cs-module-name">askData.js</span>
+            <span class="cs-module-tag">product</span>
+          </button>
+          <button class="cs-module-card" data-title="privacy.js" data-kind="Trust surface"
+            data-body="The Privacy tab. Shows a live inventory of stored data, four trust facts ('0 bytes sent to servers', 'no cookies', ...), and gives the user real export, import, and delete controls.">
+            <span class="cs-module-name">privacy.js</span>
+            <span class="cs-module-tag">trust</span>
+          </button>
+          <button class="cs-module-card" data-title="sampleData.js" data-kind="Demo generator"
+            data-body="Generates 60 days of realistic demo data with a seeded PRNG (same seed = same demo, every device). Deliberately clusters workouts on Tue/Thu/Sat so the pattern detection has something meaningful to surface.">
+            <span class="cs-module-name">sampleData.js</span>
+            <span class="cs-module-tag">demo</span>
+          </button>
+          <button class="cs-module-card" data-title="nutrition.js / workouts.js / tracker.js" data-kind="Feature views"
+            data-body="One file per tracking concern. Each is small, self-contained, and does exactly one job (log meals, log workouts, log water). Split by cohesion, not by line count.">
+            <span class="cs-module-name">tracking views</span>
+            <span class="cs-module-tag">feature</span>
+          </button>
+          <button class="cs-module-card" data-title="app.js" data-kind="Router + glue"
+            data-body="Tab routing, the dashboard aggregate, the settings form, and a store-change listener that re-renders the active view. The only place that knows 'which view is current'.">
+            <span class="cs-module-name">app.js</span>
+            <span class="cs-module-tag">glue</span>
+          </button>
+        </div>
+
+        <h3>Design principles I stuck to</h3>
+        <ul class="cs-list">
+          <li><strong>Single Responsibility.</strong> Each module owns one concern. When one grew past its purpose, I split it &mdash; that's how Progress and Ask ended up as their own files.</li>
+          <li><strong>Pure analysis functions.</strong> Insights and Ask both consume a state snapshot with no side effects. One algorithm, two features.</li>
+          <li><strong>No dependencies.</strong> Every chart is inline SVG. Every "AI" answer is deterministic. Every byte of user data lives on the user's device.</li>
+        </ul>
+      </section>
+
+      <!-- TESTING -->
+      <section class="cs-section cs-reveal" id="testing">
+        <h2>6. Testing &amp; iteration</h2>
+        <p>
+          I tested FitFuel with a small group of peers, focusing on two questions:
+          can they log a day of data without help, and can they extract at least
+          one insight about themselves from the dashboard?
+        </p>
+        <div class="cs-callout cs-callout--muted">
+          <strong>Placeholder for real numbers.</strong> The prototype was tested
+          with a small n; I'll fill in specific task-completion rates and quotes
+          after the next round of usability sessions. What follows is the
+          observation pattern from the pilot.
+        </div>
+        <h3>What the pilot surfaced</h3>
+        <ul class="cs-list">
+          <li>Users could complete a full day of logging on first try without prompting.</li>
+          <li>Trend views were rated more useful than raw daily numbers &mdash; which is exactly why I built the Progress tab.</li>
+          <li>Nobody spontaneously found the Insights tab; I added a nudge on the Dashboard in the next iteration.</li>
+          <li>Users appreciated Ask Your Data admitting when it couldn't answer, rather than making something up. This came up unprompted.</li>
+        </ul>
+      </section>
+
+      <!-- LEARNED -->
+      <section class="cs-section cs-reveal" id="learned">
+        <h2>7. What I learned</h2>
+        <ul class="cs-list">
+          <li><strong>Constraints made the product better.</strong> Committing to "no backend" forced me to think about what tracking actually needs, which turned out to be much less than most apps assume.</li>
+          <li><strong>Insight design is harder than chart design.</strong> Deciding what an app is <em>allowed</em> to say about someone's behavior &mdash; and how &mdash; is a deeper problem than plotting the data. Framing everything as observation, never advice, took real revision.</li>
+          <li><strong>Trust is a feature.</strong> Users don't just want to be told their data is safe; they want to see it. The Privacy tab changed how users described the app to me in interviews.</li>
+          <li><strong>Honesty scales better than magic.</strong> Ask Your Data would have taken a fraction of the time as a GPT wrapper, but it would have broken the privacy promise and introduced hallucination. The rule-based version is simpler, verifiable, and stronger as a product statement.</li>
+        </ul>
+      </section>
+
+      <!-- NEXT -->
+      <section class="cs-section cs-reveal" id="next">
+        <h2>8. What's next</h2>
+        <ul class="cs-list">
+          <li>Expand the intent matcher in Ask Your Data based on the questions real users actually try to ask.</li>
+          <li>Add optional sleep and mood tracking to unlock richer correlation insights.</li>
+          <li>Ship a PWA manifest and service worker so users can install FitFuel as a mobile app.</li>
+          <li>Run a formal usability round with pre/post metrics on task completion and self-reported clarity.</li>
+          <li>Publish the analysis functions as a small open-source library so other privacy-first trackers can reuse the same behavioral logic.</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta cs-reveal">
+    <h2>Try FitFuel</h2>
+    <p>Load the sample data from Settings and poke around. Everything runs in your browser.</p>
+    <a class="btn btn--primary btn--big" href="../index.html">Open the app</a>
+  </section>
+
+  <footer class="footer">
+    <p>Built by Nhi &middot; data stays on your device &middot; case study written spring 2026</p>
+  </footer>
+
+  <!-- Module detail modal (single shell, populated on click) -->
+  <div class="cs-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="cs-modal-title">
+    <div class="cs-modal__panel" role="document">
+      <button class="cs-modal__close" aria-label="Close">&times;</button>
+      <p class="cs-modal__kind"></p>
+      <h3 class="cs-modal__title" id="cs-modal-title"></h3>
+      <div class="cs-modal__body"></div>
+    </div>
+  </div>
+
+  <script src="case-study.js"></script>
+</body>
+</html>
